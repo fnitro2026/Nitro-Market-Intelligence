@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Nitro Market Intelligence — Forráslista &amp; Módszertan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Titillium+Web:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2D3548;
+    --ink-soft:#5B6478;
+    --ink-faint:#8496AC;
+    --amber:#FDAF17;
+    --amber-dark:#8A5B0A;
+    --amber-bg:#FEF2D9;
+    --coral:#D64E28;
+    --coral-dark:#7A2C17;
+    --coral-bg:#FBE7E1;
+    --teal:#046F99;
+    --teal-dark:#044357;
+    --teal-bg:#DFF0F6;
+    --slate-bg:#E9ECEF;
+    --bg:#F4F5F6;
+    --paper:#FFFFFF;
+    --line:#DEE1E5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Titillium Web',system-ui,sans-serif; line-height:1.6;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  header{background:var(--ink); padding:52px 24px 40px;}
+  header .inner{max-width:832px; margin:0 auto;}
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--amber); letter-spacing:.08em; margin-bottom:14px; font-weight:500;}
+  .eyebrow a{color:#fff; text-decoration:none; border-bottom:1px dotted #fff;}
+  .eyebrow a:hover{color:var(--amber); border-color:var(--amber);}
+  h1{font-family:'Sora',sans-serif; font-weight:700; font-size:32px; color:#fff; margin:0 0 12px; letter-spacing:-0.01em;}
+  header p{color:#C7CCD6; font-size:15px; margin:0; max-width:60ch;}
+
+  .toc{background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:20px 24px; margin:32px 0 40px;}
+  .toc-title{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin-bottom:12px; display:block;}
+  .toc-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:6px 18px;}
+  .toc-grid a{color:var(--ink); text-decoration:none; font-size:13.5px; font-weight:600; border-bottom:1px solid transparent;}
+  .toc-grid a:hover{color:var(--teal-dark); border-color:var(--teal);}
+
+  section{margin:0 0 46px;}
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; scroll-margin-top:20px;}
+  .sec-head .idx{font-family:'JetBrains Mono',monospace; color:var(--amber-dark); font-size:13px; font-weight:700;}
+  .sec-head h2{font-family:'Sora',sans-serif; font-size:22px; margin:0; font-weight:700;}
+  .sec-sub{color:var(--ink-soft); font-size:14.5px; max-width:70ch; margin:0 0 20px; line-height:1.65;}
+
+  table{width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--line); border-radius:8px; overflow:hidden; margin:0 0 20px; font-size:13.5px;}
+  th{font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; text-align:left; padding:10px 12px; background:var(--slate-bg); color:var(--ink-soft);}
+  td{padding:10px 12px; border-top:1px solid var(--line); vertical-align:top; line-height:1.5;}
+
+  .src-list{list-style:none; margin:0; padding:0; background:var(--paper); border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .src-list li{padding:12px 18px; border-bottom:1px solid var(--line); font-size:14px;}
+  .src-list li:last-child{border-bottom:none;}
+  .src-list strong{font-family:'Sora',sans-serif; font-weight:700; font-size:14.5px;}
+  .src-list .dash{color:var(--ink-faint); margin:0 4px;}
+
+  .subgroup-label{font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--ink); margin:22px 0 8px;}
+
+  .callout{background:var(--amber-bg); border:1px solid var(--amber); border-left:4px solid var(--amber); border-radius:6px; padding:14px 18px; font-size:14px; margin:0 0 20px;}
+  .callout.warn{background:var(--coral-bg); border-color:var(--coral);}
+  .callout strong{font-family:'Sora',sans-serif;}
+
+  .actionideas{background:var(--paper); border:1px solid var(--line); border-left:4px solid var(--coral); border-radius:6px; padding:16px 18px; margin:0 0 20px;}
+  .actionideas-title{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:8px;}
+  .actionideas ul{margin:0; padding-left:18px;}
+  .actionideas li{margin-bottom:5px; font-size:14px;}
+
+  .steps{counter-reset:step; list-style:none; margin:0 0 20px; padding:0;}
+  .steps li{position:relative; padding:6px 0 6px 34px; font-size:14.5px;}
+  .steps li::before{counter-increment:step; content:counter(step); position:absolute; left:0; top:6px; width:22px; height:22px; border-radius:5px; background:var(--amber-bg); color:var(--amber-dark); font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center;}
+
+  .back-to-top{position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; font-family:'JetBrains Mono',monospace; font-size:12px; padding:10px 16px; border-radius:999px; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,.18);}
+  .back-to-top:hover{background:var(--amber); color:var(--ink);}
+
+  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--line); font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-faint); line-height:1.8;}
+  footer a{color:var(--teal-dark);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <div class="eyebrow">NITRO MARKET INTELLIGENCE &middot; <a href="nitro-piaci-intelligencia-olvaso.html">&larr; vissza az olvasóhoz</a></div>
+    <h1>Forráslista &amp; Módszertan</h1>
+    <p>149 forrás, 18 kategóriában, plusz a hírprioritási rendszer, a standard elemzési sablon és a 7 klaszteres trend-térkép — ez az a módszertani háttér, ami alapján az olvasóban minden elemzés készül.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <nav class="toc" id="top">
+    <span class="toc-title">Ugrás egy szakaszra</span>
+    <div class="toc-grid">
+      <a href="#prioritas">0. Hírprioritási rendszer</a>
+      <a href="#trendterkep">Trend-térkép (7 klaszter)</a>
+      <a href="#cat-1">1. Loyalty &amp; Hűségprogram</a>
+      <a href="#cat-2">2. CRM</a>
+      <a href="#cat-3">3. Marketing Automatizáció</a>
+      <a href="#cat-4">4. Martech (általános)</a>
+      <a href="#cat-5">5. AI &amp; Agentic AI</a>
+      <a href="#cat-6">6. CX &amp; Churn/Retention</a>
+      <a href="#cat-7">7. Data, Analytics &amp; Data Science</a>
+      <a href="#cat-8">8. Privacy &amp; Szabályozás</a>
+      <a href="#cat-9">9. Consulting &amp; Üzleti stratégia</a>
+      <a href="#cat-10">10. Retail &amp; E-commerce</a>
+      <a href="#cat-11">11. Digitális transzformáció</a>
+      <a href="#cat-12">12. Hazai piac / magyar szaksajtó</a>
+      <a href="#cat-13">13. Események, szervezetek</a>
+      <a href="#cat-14">14. Versenytárs &amp; partner blogok</a>
+      <a href="#cat-15">15. Európai szaksajtó</a>
+      <a href="#cat-16">16. Közösségi &amp; trendvadász</a>
+      <a href="#cat-17">17. AI-eszköz felfedezés</a>
+      <a href="#cat-18">18. PR &amp; social inspiráció</a>
+      <a href="#hasznalat">Használati javaslat</a>
+    </div>
+  </nav>
+
+  <section id="prioritas">
+    <div class="sec-head"><span class="idx">0.</span><h2>Hírprioritási rendszer</h2></div>
+    <p class="sec-sub">Mielőtt egy hír bekerülne a heti digestbe vagy kommunikációs felhasználásra kerülne, célszerű ezen a pontrendszeren átfuttatni — így egységes lesz, ki mit tart fontosnak, nem szubjektív megérzés dönti el, mi kerül a csapat elé.</p>
+
+    <table>
+      <tr><th>#</th><th>Szempont</th><th>0 pont</th><th>1 pont</th><th>2 pont</th><th>3 pont</th></tr>
+      <tr><td><strong>A</strong></td><td>Üzleti/szakterületi relevancia</td><td>Nincs kapcsolódás</td><td>Érintőleges</td><td>Támogató pillér</td><td>Core terület</td></tr>
+      <tr><td><strong>B</strong></td><td>Sürgősség / időablak</td><td>Örökzöld</td><td>Hetek-hónapok</td><td>Napok-hetek</td><td>Órák-napok</td></tr>
+      <tr><td><strong>C</strong></td><td>Üzleti hatás mértéke</td><td>Elhanyagolható</td><td>Kisebb</td><td>Közepes</td><td>Jelentős</td></tr>
+      <tr><td><strong>D</strong></td><td>Kommunikációs felhasználhatóság</td><td>Nem kommunikálható</td><td>Csak belső</td><td>Jó alapanyag</td><td>Azonnal kimehet</td></tr>
+      <tr><td><strong>E</strong></td><td>Forrás-megbízhatóság</td><td>Pletyka</td><td>Egy forrás</td><td>Több egybehangzó</td><td>Elsődleges forrás</td></tr>
+    </table>
+    <p class="sec-sub" style="margin-top:-8px;">Összpontszám: 0–15. A <strong>D szempont tudatosan külön dimenzió</strong>, nem alszempont — egy hír lehet alacsony üzleti hatású, de magas kommunikációs értékű, és fordítva is.</p>
+
+    <table>
+      <tr><th>Pontszám</th><th>Kategória</th><th>Mit jelent</th><th>Következő lépés</th></tr>
+      <tr><td>0–3</td><td>🔵 Watchlist</td><td>Háttérzaj, jó tudni, de nem sürgős</td><td>Bekerül a watchlistbe</td></tr>
+      <tr><td>4–7</td><td>🟡 Idea</td><td>Releváns, de nem időkritikus</td><td>Heti digest, content-ötlet</td></tr>
+      <tr><td>8–15</td><td>🔴 Stratégia</td><td>Érdemi hatású, gyors reakciót kíván</td><td>48 órán belüli megosztás; 12+ pontnál azonnali eszkaláció</td></tr>
+    </table>
+
+    <div class="callout">
+      <strong>Automatikus "Stratégia" besorolás</strong> (pontszámtól függetlenül) négy esetben: közvetlen versenytárs lép be a brand loyalty térbe; szabályozási változás konkrét, közeli határidővel; meglévő kulcsügyfelet érintő hír; fő technológiai partner strukturális változása.
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:16px;">Standard elemzési sablon</h3>
+    <p class="sec-sub">Ha egy hír megérdemli (jellemzően 🔴 Stratégia szinttől), ugyanabban a 10 pontos struktúrában dolgozzuk fel:</p>
+    <ol class="steps">
+      <li>Rövid összefoglaló</li>
+      <li>Mi változott?</li>
+      <li>Miért fontos?</li>
+      <li>Kiket érint? (iparágak + ügyféltípusok)</li>
+      <li>Hatás a Nitro ügyfeleire</li>
+      <li>Üzleti lehetőség</li>
+      <li>Kockázat</li>
+      <li>Kapcsolódó trendek</li>
+      <li>Javasolt következő lépés</li>
+      <li>Stratégiai jelentőség (1–10)</li>
+    </ol>
+
+    <div class="actionideas">
+      <span class="actionideas-title">Minden elemzés kötelező záróblokkja — Nitro Action Ideas</span>
+      <ul>
+        <li>Készítsünk SM posztot erről?</li>
+        <li>Érdemes ügyfél-webinárt szervezni?</li>
+        <li>Frissítsük a CRM szolgáltatás oldalát?</li>
+        <li>Van olyan ügyfél, akit proaktívan meg kellene keresni?</li>
+        <li>Milyen új tanácsadási lehetőség adódik?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="trendterkep">
+    <div class="sec-head"><span class="idx">&#9670;</span><h2>Trend-térkép — 7 klaszter</h2></div>
+    <p class="sec-sub">A "Kapcsolódó trendek" mező nem csak dokumentál, hanem idővel egy vizuális trend-térképet is felépít — így az elemzések nem elszigetelt tételekként, hanem összeálló képként élnek tovább.</p>
+    <table>
+      <tr><th>Klaszter</th><th>Mit fed le</th><th>Jelenleg kapcsolódik</th></tr>
+      <tr><td><strong>Hazai piac</strong></td><td>Verseny és pozicionálás</td><td>Loyalty érettség</td></tr>
+      <tr><td><strong>Loyalty érettség</strong></td><td>Piaci belépők, ROI-adatok</td><td>Hazai piac, Nemzetközi retail</td></tr>
+      <tr><td><strong>Nemzetközi retail</strong></td><td>Program-innováció külföldi példái</td><td>Loyalty érettség</td></tr>
+      <tr><td><strong>Szabályozás</strong></td><td>AI Act, GDPR, határidők</td><td>Agentic AI</td></tr>
+      <tr><td><strong>Agentic AI</strong></td><td>Martech-platformok AI-fejlesztései</td><td>Szabályozás, Churn-predikció</td></tr>
+      <tr><td><strong>Churn-predikció</strong></td><td>Customer analytics, predikció</td><td>Agentic AI</td></tr>
+      <tr><td><strong>Csatorna-stratégia &amp; ügyfélkommunikáció</strong></td><td>Csatorna-mix, omnichannel-orchestration</td><td>— (önálló sziget)</td></tr>
+    </table>
+    <p class="sec-sub">Karbantartási szabály: minden mélyelemzésnél 1–2 klaszter megjelölendő; ha egy klaszter 2+ hónapon át 5-nél több hírt gyűjt, érdemes kettéválasztani; a térkép negyedévente rajzolandó újra.</p>
+  </section>
+
+  <section id="cat-1">
+    <div class="sec-head"><span class="idx">1</span><h2>Loyalty &amp; Hűségprogram</h2></div>
+    <p class="sec-sub">A Nitro mag-szakterülete.</p>
+    <ul class="src-list">
+      <li><strong>The Wise Marketer</strong> (thewisemarketer.com)<span class="dash">—</span>a nemzetközi loyalty-szakma vezető szaklapja, heti hírlevele (The Loyalty Newswire) programindításokat, rebrandeket gyűjt össze.</li>
+      <li><strong>Loyalty360</strong> (loyalty360.org)<span class="dash">—</span>amerikai loyalty szakmai szervezet; kutatások, benchmark-riportok, díjátadók.</li>
+      <li><strong>Global Loyalty Organisation / GLO Weekly</strong> (globalloyalty.org)<span class="dash">—</span>heti globális loyalty-hírösszefoglaló, tömör formátumban.</li>
+      <li><strong>Antavo blog</strong> (antavo.com/blog)<span class="dash">—</span>magyar alapítású AI loyalty platform; a Global Customer Loyalty Report kiadója, egyben potenciális partner/versenytárs.</li>
+      <li><strong>Bond Brand Loyalty</strong> (bondbrandloyalty.com)<span class="dash">—</span>éves Loyalty Report sorozat, fogyasztói motivációs kutatások.</li>
+      <li><strong>Currency Alliance</strong> (currencyalliance.com)<span class="dash">—</span>loyalty-valuta és partnerségi (coalition loyalty) modellek.</li>
+      <li><strong>Kobie</strong> (kobie.com/resources)<span class="dash">—</span>nemzetközi loyalty-technológiai szereplő, stratégiai gondolkodás forrása.</li>
+      <li><strong>Merkle Insights</strong> (merkle.com/insights)<span class="dash">—</span>nemzetközi CX/loyalty tanácsadó (Dentsu csoport).</li>
+      <li><strong>Comarch Loyalty Marketing blog</strong><span class="dash">—</span>európai loyalty tech szolgáltató, KKE-releváns insight.</li>
+      <li><strong>LoyaltyLobby</strong> (loyaltylobby.com)<span class="dash">—</span>fogyasztói szemszögű loyalty-hírek, a fogyasztói hangulat korai jelzője.</li>
+      <li><strong>Loyalty Academy / CLMP</strong> (loyaltyacademy.org)<span class="dash">—</span>loyalty szakmai képzési és minősítési szervezet.</li>
+    </ul>
+  </section>
+
+  <section id="cat-2">
+    <div class="sec-head"><span class="idx">2</span><h2>CRM</h2></div>
+    <ul class="src-list">
+      <li><strong>Salesforce Blog</strong> (salesforce.com/blog)<span class="dash">—</span>piacvezető CRM, az Agentforce/agentic AI fejlesztések elsődleges forrása.</li>
+      <li><strong>HubSpot Blog</strong> (blog.hubspot.com)<span class="dash">—</span>Nitro partner platform.</li>
+      <li><strong>HubSpot Community Release Notes</strong><span class="dash">—</span>havi termékfrissítés-napló.</li>
+      <li><strong>SalesManago blog</strong><span class="dash">—</span>Nitro partner platform, KKE-fókuszú engagement szoftver.</li>
+      <li><strong>Brevo blog</strong><span class="dash">—</span>Nitro partner platform.</li>
+      <li><strong>Zendesk Blog</strong> (zendesk.com/blog)<span class="dash">—</span>ügyfélszolgálati CRM oldal, CX-metrikák.</li>
+      <li><strong>CRM.org</strong><span class="dash">—</span>piaci CRM-összehasonlítások, semleges nézőpont.</li>
+      <li><strong>Gartner CRM Insights</strong><span class="dash">—</span>piaci research, Magic Quadrant.</li>
+      <li><strong>CX Today – CRM rovat</strong> (cxtoday.com/crm)<span class="dash">—</span>gyakran elsőként hozza a nagy platform-híreket.</li>
+    </ul>
+  </section>
+
+  <section id="cat-3">
+    <div class="sec-head"><span class="idx">3</span><h2>Marketing Automatizáció</h2></div>
+    <ul class="src-list">
+      <li><strong>ActiveCampaign blog</strong><span class="dash">—</span>Nitro partner platform.</li>
+      <li><strong>Klaviyo blog</strong><span class="dash">—</span>e-commerce fókuszú marketingautomatizáció, erős benchmark-adatokkal.</li>
+      <li><strong>Braze blog</strong><span class="dash">—</span>customer engagement platform, lifecycle-marketing.</li>
+      <li><strong>Iterable blog</strong><span class="dash">—</span>cross-channel automatizáció, AI-alapú send-time optimalizáció.</li>
+      <li><strong>Marketo (Adobe) blog</strong><span class="dash">—</span>enterprise szintű marketingautomatizáció.</li>
+      <li><strong>MarketingProfs</strong> (marketingprofs.com)<span class="dash">—</span>gyakorlatias cikkek és webinárok.</li>
+      <li><strong>Chief Martec</strong> (chiefmartec.com)<span class="dash">—</span>a martech-térkép készítője, évente frissülő állapotfelmérés.</li>
+    </ul>
+  </section>
+
+  <section id="cat-4">
+    <div class="sec-head"><span class="idx">4</span><h2>Martech (általános)</h2></div>
+    <ul class="src-list">
+      <li><strong>MarTech.org</strong><span class="dash">—</span>napi martech hírek, termékbejelentések.</li>
+      <li><strong>Martech Series</strong> (martechseries.com)<span class="dash">—</span>iparági hírek, vezetői interjúk.</li>
+      <li><strong>MarTech Alliance</strong><span class="dash">—</span>közösségi platform, esemény- és tartalombázis.</li>
+      <li><strong>CDP Institute</strong> (cdpinstitute.org)<span class="dash">—</span>customer data platform szakmai szervezet.</li>
+      <li><strong>Econsultancy</strong> (econsultancy.com)<span class="dash">—</span>digitális marketing kutatás és benchmark.</li>
+      <li><strong>Third Door Media napi digest</strong><span class="dash">—</span>összesített martech hírlevél.</li>
+    </ul>
+  </section>
+
+  <section id="cat-5">
+    <div class="sec-head"><span class="idx">5</span><h2>AI &amp; Agentic AI</h2></div>
+    <ul class="src-list">
+      <li><strong>VentureBeat – AI rovat</strong><span class="dash">—</span>AI iparági hírek, termékbejelentések.</li>
+      <li><strong>TechCrunch – AI rovat</strong><span class="dash">—</span>AI startup- és finanszírozási hírek.</li>
+      <li><strong>MIT Technology Review – AI rovat</strong><span class="dash">—</span>mélyebb, kontextusba helyező elemzés.</li>
+      <li><strong>Gartner AI kutatások</strong><span class="dash">—</span>agentic AI adopciós előrejelzések.</li>
+      <li><strong>McKinsey QuantumBlack / AI Insights</strong><span class="dash">—</span>AI üzleti alkalmazásának kutatásai.</li>
+      <li><strong>a16z blog</strong> (a16z.com)<span class="dash">—</span>befektetői szemléletű martech/AI trendelemzés.</li>
+      <li><strong>OpenAI Blog</strong> (openai.com/news)<span class="dash">—</span>modellfejlesztések.</li>
+      <li><strong>Anthropic News</strong> (anthropic.com/news)<span class="dash">—</span>modell- és termékfejlesztések.</li>
+    </ul>
+  </section>
+
+  <section id="cat-6">
+    <div class="sec-head"><span class="idx">6</span><h2>Customer Experience &amp; Churn/Retention</h2></div>
+    <ul class="src-list">
+      <li><strong>CX Dive</strong> (customerexperiencedive.com)<span class="dash">—</span>CX és retention hírfolyam.</li>
+      <li><strong>CX Today</strong> (cxtoday.com)<span class="dash">—</span>CX/CRM vegyes hírfolyam.</li>
+      <li><strong>Qualtrics XM Institute blog</strong><span class="dash">—</span>CX-mérési módszertan (NPS, CSAT).</li>
+      <li><strong>Forrester – CX Research</strong><span class="dash">—</span>piackutatás, prediktív modellek, Wave-riportok.</li>
+      <li><strong>Gainsight blog</strong><span class="dash">—</span>B2B customer success és churn-menedzsment.</li>
+      <li><strong>ChurnZero blog</strong><span class="dash">—</span>churn predikció, customer success.</li>
+      <li><strong>Pecan AI blog</strong><span class="dash">—</span>predikciós analitika, no-code churn-modellezés.</li>
+      <li><strong>Zendesk CX Trends Report</strong><span class="dash">—</span>éves, széles mintás CX-benchmark.</li>
+    </ul>
+  </section>
+
+  <section id="cat-7">
+    <div class="sec-head"><span class="idx">7</span><h2>Data, Analytics &amp; Data Science</h2></div>
+    <ul class="src-list">
+      <li><strong>Towards Data Science</strong> (Medium)<span class="dash">—</span>gyakorlati adatelemzési módszertan (RFM, LTV, churn-scoring).</li>
+      <li><strong>KDnuggets</strong><span class="dash">—</span>data science/AI hírfolyam.</li>
+      <li><strong>Mixpanel blog</strong><span class="dash">—</span>termékanalitika, viselkedésalapú szegmentáció.</li>
+      <li><strong>Amplitude blog</strong><span class="dash">—</span>digitális analitika, retention-insight.</li>
+      <li><strong>mParticle blog</strong> (ma Rokt)<span class="dash">—</span>customer data platform szemlélet.</li>
+      <li><strong>Segment blog</strong> (Twilio)<span class="dash">—</span>CDP és adatintegráció.</li>
+      <li><strong>Statista</strong><span class="dash">—</span>piaci adatok, gyors hivatkozási alap.</li>
+      <li><strong>eMarketer / Insider Intelligence</strong><span class="dash">—</span>piaci előrejelzések, digitális trend-számok.</li>
+    </ul>
+  </section>
+
+  <section id="cat-8">
+    <div class="sec-head"><span class="idx">8</span><h2>Privacy &amp; Szabályozás</h2></div>
+    <ul class="src-list">
+      <li><strong>IAPP</strong> (iapp.org)<span class="dash">—</span>globális adatvédelmi hírfolyam, elsődleges szakmai forrás.</li>
+      <li><strong>EDPB</strong><span class="dash">—</span>EU-szintű GDPR-iránymutatások, elsődleges forrás.</li>
+      <li><strong>Európai Bizottság – AI Act oldal</strong><span class="dash">—</span>hivatalos, elsődleges forrás az AI Act ütemezéséhez.</li>
+      <li><strong>NAIH</strong> (naih.hu)<span class="dash">—</span>magyar adatvédelmi hatóság közleményei.</li>
+      <li><strong>noyb.eu</strong><span class="dash">—</span>privacy-jogvédő szervezet, precedensértékű ügyek.</li>
+      <li><strong>GDPR Local</strong> (gdprlocal.com)<span class="dash">—</span>GDPR/AI Act gyakorlati összefoglalók.</li>
+      <li><strong>euaiact.hu</strong><span class="dash">—</span>magyar nyelvű AI Act tájékoztató oldal.</li>
+    </ul>
+  </section>
+
+  <section id="cat-9">
+    <div class="sec-head"><span class="idx">9</span><h2>Consulting &amp; Üzleti stratégia</h2></div>
+    <ul class="src-list">
+      <li><strong>McKinsey Insights</strong><span class="dash">—</span>stratégiai és marketing-kutatások.</li>
+      <li><strong>BCG</strong><span class="dash">—</span>üzleti stratégia, digitális transzformációs kutatások.</li>
+      <li><strong>Deloitte Digital blog</strong><span class="dash">—</span>CX/martech tanácsadói szemlélet.</li>
+      <li><strong>PwC Magyarország – Sajtószoba</strong><span class="dash">—</span>hazai piaci kutatások — kiemelt figyelést igényel a közvetlen versenyhelyzet miatt.</li>
+      <li><strong>Bain &amp; Company Insights</strong><span class="dash">—</span>ügyfélélmény és loyalty-stratégiai kutatások.</li>
+      <li><strong>Accenture Song blog</strong><span class="dash">—</span>kreatív + tanácsadói összefonódás.</li>
+      <li><strong>Harvard Business Review</strong> (hbr.org)<span class="dash">—</span>vezetői szintű stratégiai cikkek.</li>
+    </ul>
+  </section>
+
+  <section id="cat-10">
+    <div class="sec-head"><span class="idx">10</span><h2>Retail &amp; E-commerce</h2></div>
+    <ul class="src-list">
+      <li><strong>Retail Dive</strong> (retaildive.com)<span class="dash">—</span>amerikai retail iparági hírfolyam.</li>
+      <li><strong>Digital Commerce 360</strong><span class="dash">—</span>e-commerce trendek, technológiai fejlesztések.</li>
+      <li><strong>NRF blog</strong><span class="dash">—</span>retail szövetség, loyalty/CX kutatások.</li>
+      <li><strong>Chain Store Age</strong><span class="dash">—</span>retail lánc szintű hírek.</li>
+      <li><strong>Practical Ecommerce</strong><span class="dash">—</span>taktikai szintű e-commerce cikkek.</li>
+      <li><strong>Trade Magazin</strong> (trademagazin.hu)<span class="dash">—</span>hazai FMCG/retail szaklap.</li>
+      <li><strong>Shopnews.hu</strong><span class="dash">—</span>hazai kereskedelmi hírportál.</li>
+    </ul>
+  </section>
+
+  <section id="cat-11">
+    <div class="sec-head"><span class="idx">11</span><h2>Digitális transzformáció</h2></div>
+    <ul class="src-list">
+      <li><strong>MIT Sloan Management Review</strong><span class="dash">—</span>digitális stratégia, vezetői döntéshozatal.</li>
+      <li><strong>CIO.com</strong><span class="dash">—</span>vállalati digitális transzformáció.</li>
+      <li><strong>Forbes – Digital Transformation rovat</strong><span class="dash">—</span>üzleti szemléletű cikkek.</li>
+      <li><strong>Deloitte Digital Transformation Insights</strong><span class="dash">—</span>módszertani anyagok, érettségi modellek.</li>
+    </ul>
+  </section>
+
+  <section id="cat-12">
+    <div class="sec-head"><span class="idx">12</span><h2>Hazai piac / magyar szaksajtó</h2></div>
+    <ul class="src-list">
+      <li><strong>marketing.hu</strong><span class="dash">—</span>hazai marketing hírfolyam — az elsődleges hazai forrás.</li>
+      <li><strong>mmonline.hu</strong><span class="dash">—</span>Marketing &amp; Média szaklap.</li>
+      <li><strong>piacesprofit.hu</strong><span class="dash">—</span>hazai üzleti/marketing hírportál.</li>
+      <li><strong>storeinsider.hu</strong><span class="dash">—</span>hazai retail/kereskedelem szaklap.</li>
+      <li><strong>kreativ.hu</strong><span class="dash">—</span>hazai reklám/kommunikációs szaklap.</li>
+      <li><strong>Portfolio.hu</strong><span class="dash">—</span>üzleti/gazdasági hírportál.</li>
+      <li><strong>HWSW / bitport.hu</strong><span class="dash">—</span>hazai IT/tech hírportál.</li>
+      <li><strong>Forbes.hu</strong><span class="dash">—</span>üzleti vezetői szemléletű cikkek.</li>
+    </ul>
+  </section>
+
+  <section id="cat-13">
+    <div class="sec-head"><span class="idx">13</span><h2>Események, szervezetek, közösségek</h2></div>
+    <ul class="src-list">
+      <li><strong>Digital Forum</strong><span class="dash">—</span>a Nitro rendszeres eseménye.</li>
+      <li><strong>Internet Hungary</strong><span class="dash">—</span>hazai digitális konferencia.</li>
+      <li><strong>Diamond Awards</strong><span class="dash">—</span>hazai marketing díjátadó.</li>
+      <li><strong>MMSZ</strong><span class="dash">—</span>hazai szakmai szervezet.</li>
+      <li><strong>IAB Hungary</strong><span class="dash">—</span>digitális hirdetési szövetség.</li>
+      <li><strong>MarTech Conference</strong><span class="dash">—</span>nemzetközi martech-konferencia.</li>
+    </ul>
+  </section>
+
+  <section id="cat-14">
+    <div class="sec-head"><span class="idx">14</span><h2>Versenytárs &amp; technológiai partner blogok</h2></div>
+    <ul class="src-list">
+      <li><strong>Attention CRM Consulting</strong><span class="dash">—</span>közvetlen hazai versenytárs.</li>
+      <li><strong>HD Marketing blog</strong><span class="dash">—</span>hazai versenytárs, aktív tartalommarketing.</li>
+      <li><strong>Resend blog</strong><span class="dash">—</span>hazai HubSpot/CRM-fókuszú versenytárs.</li>
+      <li><strong>Bloomreach blog</strong><span class="dash">—</span>az Antavo-riport egyik szponzora.</li>
+      <li><strong>theMarketer blog</strong><span class="dash">—</span>hazai/regionális marketingautomatizációs platform.</li>
+      <li><strong>Bárketing Podcast</strong> (marketing.hu)<span class="dash">—</span>új hazai, AI-fókuszú marketing podcast.</li>
+    </ul>
+  </section>
+
+  <section id="cat-15">
+    <div class="sec-head"><span class="idx">15</span><h2>Európai szaksajtó</h2></div>
+    <p class="sec-sub">UK, DACH, Franciaország, Spanyolország — ezek a piacok gyakran 1–3 évvel korábban futnak át olyan trendeken, amik később itthon is megjelennek.</p>
+
+    <div class="subgroup-label">🇬🇧 Egyesült Királyság</div>
+    <ul class="src-list">
+      <li><strong>Marketing Week</strong><span class="dash">—</span>az egyik legnagyobb brit marketing szaklap.</li>
+      <li><strong>The Drum</strong><span class="dash">—</span>brit marketing/reklám/média hírportál.</li>
+      <li><strong>Campaign</strong><span class="dash">—</span>brit reklámipari szaklap.</li>
+      <li><strong>Loyalty Magazine</strong><span class="dash">—</span>kifejezetten loyalty-szakosodott brit szaklap, saját díjátadóval.</li>
+      <li><strong>Retail Gazette</strong><span class="dash">—</span>brit retail iparági hírportál.</li>
+      <li><strong>ICO</strong><span class="dash">—</span>brit adatvédelmi hatóság, önálló UK GDPR-fejlődés.</li>
+    </ul>
+
+    <div class="subgroup-label">🇩🇪🇦🇹 Németország / Ausztria (DACH)</div>
+    <ul class="src-list">
+      <li><strong>Horizont</strong> (horizont.net)<span class="dash">—</span>vezető német marketing/média napi hírportál.</li>
+      <li><strong>OMR</strong><span class="dash">—</span>a német digitális marketing legnagyobb médiamárkája és konferenciája.</li>
+      <li><strong>t3n</strong><span class="dash">—</span>német digitális gazdasági/tech magazin.</li>
+      <li><strong>absatzwirtschaft</strong><span class="dash">—</span>hagyományos német marketing szaklap; szerkesztőségi átalakulás alatt, érdemes ellenőrizni aktív-e még.</li>
+      <li><strong>Handelsverband Österreich</strong><span class="dash">—</span>osztrák kereskedelmi szövetség.</li>
+      <li><strong>BfDI</strong><span class="dash">—</span>német szövetségi adatvédelmi biztos hivatala.</li>
+    </ul>
+
+    <div class="subgroup-label">🇫🇷 Franciaország</div>
+    <ul class="src-list">
+      <li><strong>LSA</strong> (lsa-conso.fr)<span class="dash">—</span>vezető francia retail szaklap, önálló hűségprogram-rovattal.</li>
+      <li><strong>Relation Client Mag</strong><span class="dash">—</span>francia CX/CRM szakportál.</li>
+      <li><strong>Stratégies</strong><span class="dash">—</span>francia marketing/reklámipari szaklap.</li>
+      <li><strong>Le Journal du Net</strong><span class="dash">—</span>francia digitális üzleti hírportál.</li>
+      <li><strong>CNIL</strong><span class="dash">—</span>francia adatvédelmi hatóság, aktív jogalkalmazó.</li>
+    </ul>
+
+    <div class="subgroup-label">🇪🇸 Spanyolország</div>
+    <ul class="src-list">
+      <li><strong>MarketingDirecto.com</strong><span class="dash">—</span>vezető spanyol nyelvű marketing/reklám hírportál.</li>
+      <li><strong>PuroMarketing</strong><span class="dash">—</span>spanyol digitális marketing és AI-fókuszú hírportál.</li>
+      <li><strong>Ecommerce News</strong><span class="dash">—</span>spanyol e-commerce szaklap.</li>
+      <li><strong>IPMARK</strong><span class="dash">—</span>spanyol marketing/reklámipari szaklap.</li>
+      <li><strong>AEPD</strong><span class="dash">—</span>spanyol adatvédelmi hatóság.</li>
+    </ul>
+
+    <div class="subgroup-label">🇪🇺 Páneurópai kiegészítés</div>
+    <ul class="src-list">
+      <li><strong>European Loyalty Awards</strong><span class="dash">—</span>páneurópai loyalty-verseny, legjobb gyakorlat kontinentális szinten.</li>
+      <li><strong>IAB Europe</strong><span class="dash">—</span>páneurópai digitális hirdetési szövetség.</li>
+    </ul>
+  </section>
+
+  <section id="cat-16">
+    <div class="sec-head"><span class="idx">16</span><h2>Közösségi &amp; trendvadász források</h2></div>
+    <p class="sec-sub">Reddit és organikus szakmai közösségek — nem szerkesztett hír, hanem nyers, alulról jövő szakmai hangulat és kreatív trendek. Félévente érdemes felülvizsgálni, melyik 3-4 fórum aktív még.</p>
+    <ul class="src-list">
+      <li><strong>r/marketing</strong><span class="dash">—</span>általános marketing közösség, napi taktikai viták.</li>
+      <li><strong>r/advertising</strong><span class="dash">—</span>hirdetési szakma, kreatív trendek.</li>
+      <li><strong>r/DigitalMarketing</strong><span class="dash">—</span>taktikai megbeszélések, korai AI-eszköz-reakciók.</li>
+      <li><strong>r/CRM</strong><span class="dash">—</span>CRM-eszközök felhasználói összehasonlítása.</li>
+      <li><strong>r/PPC</strong><span class="dash">—</span>fizetett hirdetés taktikai közösség.</li>
+      <li><strong>r/GrowthHacking</strong><span class="dash">—</span>növekedési/retenciós taktikák.</li>
+      <li><strong>r/CustomerSuccess</strong><span class="dash">—</span>B2B retention nézőpont.</li>
+      <li><strong>r/artificial &amp; r/singularity</strong><span class="dash">—</span>AI mainstream-narratíva korai jelzése.</li>
+    </ul>
+  </section>
+
+  <section id="cat-17">
+    <div class="sec-head"><span class="idx">17</span><h2>AI-eszköz &amp; termelékenységi felfedezés</h2></div>
+    <p class="sec-sub">A napi munkához, nem csak piacfigyeléshez — konkrétan használható, kipróbálható eszközök.</p>
+    <ul class="src-list">
+      <li><strong>Product Hunt</strong><span class="dash">—</span>napi új termékindulások.</li>
+      <li><strong>There's An AI For That</strong><span class="dash">—</span>kereshető AI-eszköz katalógus.</li>
+      <li><strong>Futurepedia</strong><span class="dash">—</span>napi frissülő AI-eszköz directory.</li>
+      <li><strong>Hacker News</strong><span class="dash">—</span>gyakran itt jelenik meg elsőként egy-egy új technológia.</li>
+      <li><strong>Zapier blog</strong><span class="dash">—</span>automatizációs eszköz-hírek.</li>
+      <li><strong>Notion blog</strong><span class="dash">—</span>munkaszervezési/AI-asszisztens fejlesztések.</li>
+    </ul>
+    <div class="callout warn"><strong>AI hírlevelek</strong> — The Rundown AI, TLDR AI, Ben's Bites, The Neuron: ezek ~80%-ban átfedik egymást, érdemes csak 1-2-t választani állandó olvasásra.</div>
+  </section>
+
+  <section id="cat-18">
+    <div class="sec-head"><span class="idx">18</span><h2>PR &amp; social media tartalmi inspiráció</h2></div>
+    <p class="sec-sub">Honnan jöhet ötlet, formátum vagy hivatkozási alap egy gyors social/PR/email tartalomhoz.</p>
+    <ul class="src-list">
+      <li><strong>PRWeek</strong><span class="dash">—</span>nemzetközi PR szakmai szaklap.</li>
+      <li><strong>Social Media Today</strong><span class="dash">—</span>platform-frissítések, azonnal kommunikálható hírek.</li>
+      <li><strong>Social Media Examiner</strong><span class="dash">—</span>taktikai social media tippek.</li>
+      <li><strong>Later blog</strong><span class="dash">—</span>social content trend- és formátum-inspiráció.</li>
+      <li><strong>Hootsuite blog</strong><span class="dash">—</span>éves/negyedéves social media trend-riportok.</li>
+    </ul>
+  </section>
+
+  <section id="hasznalat">
+    <div class="sec-head"><span class="idx">&#9670;</span><h2>Használati javaslat</h2></div>
+    <ul class="src-list">
+      <li><strong>Napi gyors átfutásra</strong><span class="dash">—</span>marketing.hu, MarTech.org, CX Dive, HubSpot Community Release Notes.</li>
+      <li><strong>Heti mélyebb scanre</strong><span class="dash">—</span>Loyalty, Privacy &amp; Szabályozás, Hazai piac kategóriák.</li>
+      <li><strong>Negyedéves felülvizsgálatra</strong><span class="dash">—</span>Consulting, Digitális transzformáció, Versenytárs-blogok.</li>
+      <li><strong>Havi ritmusra</strong><span class="dash">—</span>Európai szaksajtó, kiemelten a francia LSA és a brit Loyalty Magazine.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Ez a dokumentum a <a href="nitro-piaci-intelligencia-olvaso.html">Nitro Market Intelligence olvasófelület</a> módszertani háttere. Minden elemzésnél a "Forráskategória" és "Trend-klaszter" címkék erre a rendszerre hivatkoznak.
+  </footer>
+
+</div>
+
+<a href="#top" class="back-to-top">&uarr; Vissza a tetejére</a>
+
+</body>
+</html>
