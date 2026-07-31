@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>Market Intelligence</title>
+<title>Nitro Market Intelligence</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Titillium+Web:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -49,6 +49,8 @@
     letter-spacing:.08em; margin-bottom:14px; font-weight:500;
   }
   .eyebrow #lastUpdated{color:#fff; font-weight:700;}
+  .eyebrow a{color:#fff; text-decoration:none; border-bottom:1px dotted #fff;}
+  .eyebrow a:hover{color:var(--amber); border-color:var(--amber);}
   h1{
     font-family:'Sora', sans-serif;
     font-weight:700;
@@ -57,7 +59,10 @@
     margin:0 0 12px;
     letter-spacing:-0.01em;
   }
-  header p{color:#C7CCD6; font-size:15px; margin:0; max-width:52ch;}
+  header p{color:#C7CCD6; font-size:15px; margin:0 0 8px; max-width:58ch;}
+  header p:last-child{margin-bottom:0;}
+  header p.header-howto{font-size:13.5px; color:#A9AFBC;}
+  header p.header-howto em{color:#E8CB84; font-style:normal;}
 
   .filters{
     display:flex; gap:8px; flex-wrap:wrap;
@@ -97,12 +102,46 @@
   .filters.week-filters .filter-btn[aria-pressed="true"]{
     background:var(--ink); color:#fff; border-color:var(--ink);
   }
+  .filters.action-filters .filter-btn[aria-pressed="true"]{
+    background:var(--coral); color:#fff; border-color:var(--coral);
+  }
+  .filters.action-filters .filter-btn[aria-pressed="true"]::before{content:"✓ ";}
   .filter-group-label{
     font-family:'JetBrains Mono',monospace;
     font-size:11px;
     color:var(--ink-faint);
     width:100%;
     margin-bottom:2px;
+  }
+
+  .dropdown-filters{
+    display:flex; gap:14px; flex-wrap:wrap;
+    margin:0 0 8px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px;
+  }
+  .dd-group{display:flex; flex-direction:column; gap:4px; min-width:150px; flex:1;}
+  .dd-group label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-faint);
+  }
+  .dd-group select{
+    font-family:'Titillium Web',sans-serif;
+    font-size:13.5px; font-weight:600;
+    color:var(--ink);
+    padding:8px 10px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    cursor:pointer;
+  }
+  .dd-group select:focus{outline:2px solid var(--amber); outline-offset:1px;}
+  .dd-group select.dd-active{
+    border-color:var(--teal);
+    background:var(--teal-bg);
+    color:var(--teal-dark);
+  }
+  @media (max-width:700px){
+    .dd-group{min-width:100%;}
   }
 
   .tag-row{padding:0 20px 12px;}
@@ -119,6 +158,16 @@
   .tag-row .tags-inline{display:flex; gap:6px; flex-wrap:wrap;}
   .src-tag{border-style:dashed;}
   .src-tag:hover{background:var(--coral-bg); color:var(--coral-dark); border-color:var(--coral);}
+  .src-methodology-link{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px; font-weight:600;
+    color:var(--teal-dark);
+    text-decoration:none;
+    border-bottom:1px dotted var(--teal);
+    align-self:center;
+    margin-left:4px;
+  }
+  .src-methodology-link:hover{color:var(--teal); border-bottom-style:solid;}
 
   .count{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-faint); margin:16px 0 20px;}
 
@@ -186,7 +235,6 @@
   }
   .badge-low{background:var(--teal-bg); color:var(--teal-dark);}
   .badge-med{background:var(--slate-bg); color:var(--ink-soft);}
-  .badge-high{background:var(--amber-bg); color:var(--amber-dark);}
   .badge-strat{background:var(--coral-bg); color:var(--coral-dark);}
 
   .entry-title{
@@ -208,8 +256,8 @@
     color:var(--ink-faint);
     white-space:nowrap;
   }
-  .entry.status-closed{opacity:.55;}
-  .entry.status-closed:hover{opacity:.85;}
+  .entry.status-closed{filter:grayscale(1); opacity:.75;}
+  .entry.status-closed:hover{opacity:1;}
   .closed-badge{
     display:inline-flex; align-items:center; gap:5px;
     font-family:'JetBrains Mono',monospace;
@@ -220,13 +268,6 @@
     border:1px solid var(--line);
     white-space:nowrap;
   }
-  .show-closed-row{
-    display:flex; align-items:center; gap:8px;
-    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-soft);
-    margin-bottom:4px;
-  }
-  .show-closed-row input{cursor:pointer;}
-  .show-closed-row label{cursor:pointer;}
   .entry-summary{
     font-size:14px; color:var(--ink-soft);
     padding:0 20px 16px; margin:-6px 0 0;
@@ -403,6 +444,7 @@
     color:var(--ink-faint);
     line-height:1.7;
   }
+  footer a{color:var(--teal-dark);}
   footer code{background:var(--paper); border:1px solid var(--line); padding:1px 5px; border-radius:3px;}
 
   @media (max-width:600px){
@@ -414,68 +456,81 @@
 
 <header>
   <div class="inner">
-    <div class="eyebrow">NITRO &middot; BELSŐ MUNKAESZKÖZ &middot; <span id="lastUpdated">Frissítve: &hellip;</span></div>
-    <h1>Market Intelligence</h1>
-    <p>A csapat elemzései időrendben, a standard sablon szerint. Kattints egy tételre a teljes elemzés megnyitásához.</p>
+    <div class="eyebrow">BELSŐ MUNKAESZKÖZ &middot; <span id="lastUpdated">Frissítve: &hellip;</span> &middot; <a href="nitro-forraslista.html">forráslista &amp; módszertan &rarr;</a></div>
+    <h1>Nitro Market Intelligence</h1>
+    <p class="header-lead">A Nitro csapatának piaci figyelő- és elemző eszköze: itt gyűlnek össze egységes sablon szerint feldolgozva a loyalty, CRM, martech, AI és szabályozási hírek, heti/kétheti ritmusban.</p>
+    <p class="header-howto"><strong>Így érdemes használni:</strong> kezdd a <em>Prioritás</em> szűrővel (mi igényel most reakciót), szűkíts tovább a legördülőkkel (klaszter, forráskategória, hét, javasolt akció), majd kattints egy címre a teljes elemzés megnyitásához — a kártya alján a <em>Nitro Action Ideas</em> blokk mondja meg, mi a konkrét következő lépés.</p>
   </div>
 </header>
 
 <div class="wrap">
 
-  <nav class="filters week-filters" id="weekFilters">
-    <span class="filter-group-label">Hét</span>
-    <button class="filter-btn" data-week="all" aria-pressed="true">Minden hét</button>
-  </nav>
-
   <nav class="filters" id="filters">
     <span class="filter-group-label">Prioritás</span>
     <button class="filter-btn" data-filter="all" aria-pressed="true">Mind</button>
-    <button class="filter-btn" data-filter="strat" aria-pressed="false">Stratégiai</button>
-    <button class="filter-btn" data-filter="high" aria-pressed="false">Magas</button>
-    <button class="filter-btn" data-filter="med" aria-pressed="false">Közepes</button>
-    <button class="filter-btn" data-filter="low" aria-pressed="false">Alacsony</button>
+    <button class="filter-btn" data-filter="strat" aria-pressed="false">Stratégia</button>
+    <button class="filter-btn" data-filter="med" aria-pressed="false">Idea</button>
+    <button class="filter-btn" data-filter="low" aria-pressed="false">Watchlist</button>
   </nav>
 
-  <nav class="filters cat-filters" id="catFilters">
-    <span class="filter-group-label">Trend-klaszter</span>
-    <button class="filter-btn" data-cat="all" aria-pressed="true">Minden klaszter</button>
-    <button class="filter-btn" data-cat="Hazai piac" aria-pressed="false">Hazai piac</button>
-    <button class="filter-btn" data-cat="Loyalty érettség" aria-pressed="false">Loyalty érettség</button>
-    <button class="filter-btn" data-cat="Nemzetközi retail" aria-pressed="false">Nemzetközi retail</button>
-    <button class="filter-btn" data-cat="Szabályozás" aria-pressed="false">Szabályozás</button>
-    <button class="filter-btn" data-cat="Agentic AI" aria-pressed="false">Agentic AI</button>
-    <button class="filter-btn" data-cat="Churn-predikció" aria-pressed="false">Churn-predikció</button>
-  </nav>
-
-  <nav class="filters src-filters" id="srcFilters">
-    <span class="filter-group-label">Forráskategória</span>
-    <button class="filter-btn" data-src="all" aria-pressed="true">Minden forráskategória</button>
-    <button class="filter-btn" data-src="Loyalty &amp; Hűségprogram" aria-pressed="false">Loyalty &amp; Hűségprogram</button>
-    <button class="filter-btn" data-src="CRM" aria-pressed="false">CRM</button>
-    <button class="filter-btn" data-src="Marketing Automatizáció" aria-pressed="false">Marketing Automatizáció</button>
-    <button class="filter-btn" data-src="Martech" aria-pressed="false">Martech</button>
-    <button class="filter-btn" data-src="AI &amp; Agentic AI" aria-pressed="false">AI &amp; Agentic AI</button>
-    <button class="filter-btn" data-src="Customer Experience &amp; Churn" aria-pressed="false">CX &amp; Churn</button>
-    <button class="filter-btn" data-src="Data &amp; Analytics" aria-pressed="false">Data &amp; Analytics</button>
-    <button class="filter-btn" data-src="Privacy &amp; Szabályozás" aria-pressed="false">Privacy &amp; Szabályozás</button>
-    <button class="filter-btn" data-src="Consulting &amp; Üzleti stratégia" aria-pressed="false">Consulting</button>
-    <button class="filter-btn" data-src="Retail &amp; E-commerce" aria-pressed="false">Retail &amp; E-commerce</button>
-    <button class="filter-btn" data-src="Digitális transzformáció" aria-pressed="false">Digitális transzformáció</button>
-    <button class="filter-btn" data-src="Hazai szaksajtó" aria-pressed="false">Hazai szaksajtó</button>
-    <button class="filter-btn" data-src="Események &amp; szervezetek" aria-pressed="false">Események &amp; szervezetek</button>
-    <button class="filter-btn" data-src="Versenytárs &amp; partner blogok" aria-pressed="false">Versenytárs &amp; partner blogok</button>
-    <button class="filter-btn" data-src="Európai szaksajtó" aria-pressed="false">Európai szaksajtó</button>
-    <button class="filter-btn" data-src="Közösségi &amp; trendvadász" aria-pressed="false">Közösségi &amp; trendvadász</button>
-    <button class="filter-btn" data-src="AI-eszköz felfedezés" aria-pressed="false">AI-eszköz felfedezés</button>
-    <button class="filter-btn" data-src="PR &amp; social inspiráció" aria-pressed="false">PR &amp; social inspiráció</button>
-  </nav>
+  <div class="dropdown-filters" id="dropdownFilters">
+    <div class="dd-group">
+      <label for="weekSelect">Hét</label>
+      <select id="weekSelect">
+        <option value="all">Minden hét</option>
+      </select>
+    </div>
+    <div class="dd-group">
+      <label for="catSelect">Trend-klaszter</label>
+      <select id="catSelect">
+        <option value="all">Minden klaszter</option>
+        <option value="Hazai piac">Hazai piac</option>
+        <option value="Loyalty érettség">Loyalty érettség</option>
+        <option value="Nemzetközi retail">Nemzetközi retail</option>
+        <option value="Szabályozás">Szabályozás</option>
+        <option value="Agentic AI">Agentic AI</option>
+        <option value="Churn-predikció">Churn-predikció</option>
+        <option value="Csatorna-stratégia">Csatorna-stratégia</option>
+      </select>
+    </div>
+    <div class="dd-group">
+      <label for="srcSelect">Forráskategória</label>
+      <select id="srcSelect">
+        <option value="all">Minden forráskategória</option>
+        <option value="Loyalty &amp; Hűségprogram">Loyalty &amp; Hűségprogram</option>
+        <option value="CRM">CRM</option>
+        <option value="Marketing Automatizáció">Marketing Automatizáció</option>
+        <option value="Martech">Martech</option>
+        <option value="AI &amp; Agentic AI">AI &amp; Agentic AI</option>
+        <option value="Customer Experience &amp; Churn">CX &amp; Churn</option>
+        <option value="Data &amp; Analytics">Data &amp; Analytics</option>
+        <option value="Privacy &amp; Szabályozás">Privacy &amp; Szabályozás</option>
+        <option value="Consulting &amp; Üzleti stratégia">Consulting</option>
+        <option value="Retail &amp; E-commerce">Retail &amp; E-commerce</option>
+        <option value="Digitális transzformáció">Digitális transzformáció</option>
+        <option value="Hazai szaksajtó">Hazai szaksajtó</option>
+        <option value="Események &amp; szervezetek">Események &amp; szervezetek</option>
+        <option value="Versenytárs &amp; partner blogok">Versenytárs &amp; partner blogok</option>
+        <option value="Európai szaksajtó">Európai szaksajtó</option>
+        <option value="Közösségi &amp; trendvadász">Közösségi &amp; trendvadász</option>
+        <option value="AI-eszköz felfedezés">AI-eszköz felfedezés</option>
+        <option value="PR &amp; social inspiráció">PR &amp; social inspiráció</option>
+      </select>
+    </div>
+    <div class="dd-group">
+      <label for="actionSelect">Nitro Action Idea</label>
+      <select id="actionSelect">
+        <option value="all">Mind</option>
+        <option value="Készítsünk SM posztot erről?">SM poszt</option>
+        <option value="Érdemes ügyfél-webinárt szervezni?">Ügyfél-webinár</option>
+        <option value="Frissítsük a CRM szolgáltatás oldalát?">CRM oldal frissítés</option>
+        <option value="Van olyan ügyfél, akit proaktívan meg kellene keresni?">Proaktív ügyfél-megkeresés</option>
+        <option value="Milyen új tanácsadási lehetőség adódik?">Új tanácsadási lehetőség</option>
+      </select>
+    </div>
+  </div>
 
   <div class="count" id="count"></div>
-
-  <div class="show-closed-row">
-    <input type="checkbox" id="showClosed">
-    <label for="showClosed">Lezárt / aktualitását vesztett tételek mutatása</label>
-  </div>
 
   <div class="sort-row" id="sortRow">
     <span class="sort-label">Rendezés:</span>
@@ -496,9 +551,11 @@
     és másolj be egy új objektumot ugyanabban a szerkezetben. Nincs szerver, nincs adatbázis &mdash; minden ezen az egy fájlon belül él.
     Ingyenesen hosztolható pl. GitHub Pages, Netlify vagy Cloudflare Pages szolgáltatással, vagy egyszerűen megnyitható helyben is.
     <br><br>
-    A <code>categories</code> mező a trend-térkép 6 klaszterét, a <code>sourceCategories</code> mező a forráslista 18 kategóriájából a relevánsakat veheti fel &mdash; egy elemzés mindkét rendszerben több címkét is kaphat.
+    <strong>Fontos:</strong> a fejlécben látható "Frissítve" dátum a <code>LAST_UPDATED</code> konstansból jön (a script elején) &mdash; ez azt jelzi, mikor nyúlt valaki utoljára magához az eszközhöz, NEM a legújabb cikk dátumát. Ha új tételt adsz hozzá, ezt a konstanst is frissítsd a mai napra.
     <br><br>
-    Minden tételnél kötelező a <code>status</code> mező (<code>"active"</code> vagy <code>"closed"</code>). Opcionális az <code>articleAuthor</code> (a forráscikk szerzője, ha ismert) — ez a <code>sourceLabel</code> mellett jelenik meg a "Készítette:" sorban; ha nincs kitöltve, csak a forrásoldal neve látszik. Ha egy hír aktualitását veszti (pl. egy határidő elmúlt, egy döntés megszületett), állítsd <code>status</code>-t <code>"closed"</code>-ra &mdash; ekkor szürkítve jelenik meg, és alapértelmezetten ki van szűrve a listából (a "Lezárt tételek mutatása" jelölőnégyzettel visszahozható).
+    A <code>categories</code> mező a trend-térkép 7 klaszterét (Hazai piac, Loyalty érettség, Nemzetközi retail, Szabályozás, Agentic AI, Churn-predikció, Csatorna-stratégia &amp; ügyfélkommunikáció), a <code>sourceCategories</code> mező a forráslista 18 kategóriájából a relevánsakat veheti fel &mdash; egy elemzés mindkét rendszerben több címkét is kaphat. A teljes lista és a mögöttes módszertan itt: <a href="nitro-forraslista.html">nitro-forraslista.html</a>.
+    <br><br>
+    Minden tételnél kötelező a <code>status</code> mező (<code>"active"</code> vagy <code>"closed"</code>). Opcionális az <code>articleAuthor</code> (a forráscikk szerzője, ha ismert) — ez a <code>sourceLabel</code> mellett jelenik meg a "Készítette:" sorban; ha nincs kitöltve, csak a forrásoldal neve látszik. Ha egy hír aktualitását veszti (pl. egy határidő elmúlt, egy döntés megszületett), állítsd <code>status</code>-t <code>"closed"</code>-ra &mdash; ekkor a kártya fejléce egyszerűen szürkévé válik, "Inaktív" jelzéssel; nincs külön szűrő hozzá, mindig látszik a listában.
     <br><br>
     Opcionális <code>resource</code> mező: ha egy elemzéshez tartozik letölthető kutatás/riport/tanulmány (nem csak cikk), adj hozzá egy <code>{label, type, url}</code> objektumot &mdash; ez kiemelt, borostyán jelölésű dobozként jelenik meg a kártyán.
     <br><br>
@@ -516,7 +573,7 @@ const ENTRIES = [
     date: "2026-07-27",
     publishedAt: "2026.07.27. 08:30",
     priority: "strat",
-    priorityLabel: "Stratégiai",
+    priorityLabel: "Stratégia",
     score: "12/15",
     categories: ["Szabályozás", "Agentic AI"],
     sourceCategories: ["Privacy & Szabályozás"],
@@ -535,7 +592,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "Agentic AI martech-hullám (HubSpot, Salesforce), korábbi AI-compliance elemzésünk."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": true,
+      "Készítsünk SM posztot erről?": true,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": true,
@@ -549,8 +606,8 @@ const ENTRIES = [
     icon: "crm",
     date: "2026-07-27",
     publishedAt: "2026.07.27. 09:10",
-    priority: "high",
-    priorityLabel: "Magas",
+    priority: "strat",
+    priorityLabel: "Stratégia",
     score: "9/15",
     categories: ["Agentic AI"],
     sourceCategories: ["CRM", "Marketing Automatizáció", "AI & Agentic AI"],
@@ -569,7 +626,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "HubSpot júliusi Breeze AI hullám, agentic AI martech-klaszter."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": true,
+      "Készítsünk SM posztot erről?": true,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
@@ -583,8 +640,8 @@ const ENTRIES = [
     icon: "award",
     date: "2026-07-22",
     publishedAt: "2026.07.22. 10:05",
-    priority: "high",
-    priorityLabel: "Magas",
+    priority: "strat",
+    priorityLabel: "Stratégia",
     score: "10/15",
     categories: ["Loyalty érettség", "Nemzetközi retail"],
     sourceCategories: ["Loyalty & Hűségprogram", "Európai szaksajtó"],
@@ -608,7 +665,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "Antavo Global Customer Loyalty Report, korábbi loyalty érettség elemzésünk."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": false,
+      "Készítsünk SM posztot erről?": false,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
@@ -623,7 +680,7 @@ const ENTRIES = [
     date: "2026-07-27",
     publishedAt: "2026.07.27. 10:40",
     priority: "med",
-    priorityLabel: "Közepes",
+    priorityLabel: "Idea",
     score: "6/15",
     categories: ["Hazai piac"],
     sourceCategories: ["Hazai szaksajtó", "AI & Agentic AI"],
@@ -642,7 +699,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "Hazai piac klaszter, AI a marketingben (support kategória)."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": false,
+      "Készítsünk SM posztot erről?": false,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
@@ -657,7 +714,7 @@ const ENTRIES = [
     date: "2026-07-17",
     publishedAt: "2026.07.17. 00:00",
     priority: "med",
-    priorityLabel: "Közepes",
+    priorityLabel: "Idea",
     score: "6/15",
     categories: ["Agentic AI"],
     sourceCategories: ["CRM", "AI & Agentic AI", "Martech"],
@@ -676,7 +733,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "Agentic AI klaszter, HubSpot/Salesforce agentic fejlesztések."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": false,
+      "Készítsünk SM posztot erről?": false,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
@@ -690,8 +747,8 @@ const ENTRIES = [
     icon: "regulation",
     date: "2026-07-16",
     publishedAt: "2026.07.16. 00:00",
-    priority: "high",
-    priorityLabel: "Magas",
+    priority: "strat",
+    priorityLabel: "Stratégia",
     score: "9/15",
     categories: ["Szabályozás"],
     sourceCategories: ["Privacy & Szabályozás"],
@@ -710,7 +767,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "AI Act 50. cikk életbelépése, korábbi szabályozási elemzéseink."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": false,
+      "Készítsünk SM posztot erről?": false,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
@@ -722,8 +779,8 @@ const ENTRIES = [
     id: "dotdigital-loyalty-crisis-ai-platform",
     date: "2026-07-16",
     publishedAt: "2026.07.16. 00:00",
-    priority: "high",
-    priorityLabel: "Magas",
+    priority: "strat",
+    priorityLabel: "Stratégia",
     score: "11/15",
     icon: "research",
     status: "active",
@@ -744,7 +801,7 @@ const ENTRIES = [
       "Kapcsolódó trendek": "PwC Fogyasztói Hűség Körkép, Antavo Global Customer Loyalty Report, korábbi loyalty × AI konvergencia-elemzésünk."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": true,
+      "Készítsünk SM posztot erről?": true,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
@@ -757,11 +814,11 @@ const ENTRIES = [
     date: "2026-07-29",
     publishedAt: "2026.07.29. 07:00",
     priority: "med",
-    priorityLabel: "Közepes",
+    priorityLabel: "Idea",
     score: "7/15",
     icon: "research",
     status: "active",
-    categories: ["Loyalty érettség"],
+    categories: ["Csatorna-stratégia"],
     sourceCategories: ["CRM", "Európai szaksajtó"],
     title: "Dialogmarketing-Monitor 2026 (Horizont, DE): a postai reklám ott tart lépést, ahol a digitális már nem ér el törzsvásárlókat",
     summary: "A német Horizont által idézett Dialogmarketing-Monitor 2026 szerint a dialógus-csatornák (köztük a postai direkt marketing) növekednek, miközben a klasszikus médiumok visszaesnek — különösen a meglévő ügyfelek elérésében.",
@@ -775,18 +832,122 @@ const ENTRIES = [
       "Hatás a Nitro ügyfeleire": "Közvetlen hatás korlátozott, inkább nemzetközi benchmark-adat a csatorna-mix tervezéshez.",
       "Üzleti lehetőség": "Referencia-adatként használható, ha egy ügyfélnél a csatorna-mix (digitális vs. hagyományos) kérdése kerül szóba.",
       "Kockázat": "Nincs közvetlen kockázat.",
-      "Kapcsolódó trendek": "Ez a hír egyik meglévő 6 klaszterünkbe sem illik tökéletesen — érdemes figyelni, alakul-e belőle önálló, 7. klaszter (pl. \"csatorna-stratégia\")."
+      "Kapcsolódó trendek": "Ez a hír indította el a 7. klasztert (\"Csatorna-stratégia & ügyfélkommunikáció\") — az első besorolt tétel benne."
     },
     actions: {
-      "Készítsünk LinkedIn-posztot erről?": false,
+      "Készítsünk SM posztot erről?": false,
       "Érdemes ügyfél-webinárt szervezni?": false,
       "Frissítsük a CRM szolgáltatás oldalát?": false,
       "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
       "Milyen új tanácsadási lehetőség adódik?": false
     },
-    actionNote: "Háttér-benchmark — nem igényel azonnali akciót, de figyelendő a klaszter-taxonómia szempontjából."
+    actionNote: "Háttér-benchmark — a 7. klaszter (Csatorna-stratégia) alapító tétele, nem igényel azonnali akciót."
+  },
+  {
+    id: "gartner-loyalty-spending-drop",
+    date: "2026-06-15",
+    publishedAt: "2026.06.15. 00:00",
+    priority: "strat",
+    priorityLabel: "Stratégia",
+    score: "12/15",
+    icon: "research",
+    status: "active",
+    categories: ["Loyalty érettség"],
+    sourceCategories: ["Loyalty & Hűségprogram", "Consulting & Üzleti stratégia"],
+    title: "Gartner: a CMO-k loyalty- és retenciós kiadása 29%-kal esett 2024 óta",
+    summary: "A The Wise Marketer által idézett friss Gartner-kutatás szerint a marketingvezetők loyalty- és megtartási büdzséje látványosan csökkent, miközben az akvizíciós kiadás nő — ez élesen szemben áll az Antavo-riport 51,5%-os loyalty-részesedési adatával.",
+    sourceUrl: "https://thewisemarketer.com/the-loyalty-newswire-june-15-2026/",
+    sourceLabel: "thewisemarketer.com (Gartner-kutatás)",
+    fields: {
+      "Rövid összefoglaló": "A Gartner kutatása szerint a CMO-k loyalty- és retenciós kiadása 29%-kal esett vissza 2024 óta, miközben az új ügyfél megszerzésére fordított büdzsé tovább nő — a The Wise Marketer ezt \"komoly figyelmet érdemlő\" trendként emeli ki.",
+      "Mi változott?": "Ez élesen ellentmond annak a narratívának, amit korábban az Antavo Global Customer Loyalty Report alapján rögzítettünk (a marketingbüdzsé 51,5%-a megy loyaltyra) — a két adat ugyanarról a piacról fest eltérő képet.",
+      "Miért fontos?": "Ha ez a Gartner-adat pontosabban tükrözi a valós vállalati döntéshozatalt, az azt jelenti, hogy a loyalty-befektetés melletti üzleti érvelés (amit korábban az Antavo-adatra építettünk) gyengébb lábakon áll, mint gondoltuk.",
+      "Kiket érint?": "Minden vállalat, ahol a marketingbüdzsé-allokáció (akvizíció vs. megtartás) döntés előtt áll — CMO-k és marketingvezetők elsősorban.",
+      "Hatás a Nitro ügyfeleire": "Óvatosságra int: a sales-anyagokban idézett Antavo-adatot érdemes ezzel a Gartner-számmal együtt, kontextusban kezelni, nem egyoldalúan.",
+      "Üzleti lehetőség": "Pont ez a feszültség (miért csökken a loyalty-büdzsé, ha a ROI állítólag ilyen magas) jó alapja lehet egy önálló, elemző content-anyagnak vagy workshop-témának.",
+      "Kockázat": "Ha a Nitro csak az Antavo-adatot kommunikálja tovább, és egy ügyfél szembesül a Gartner-számmal, az hitelességi kockázatot jelenthet.",
+      "Kapcsolódó trendek": "Antavo Global Customer Loyalty Report (ellentmondó adat), Loyalty érettség klaszter."
+    },
+    actions: {
+      "Készítsünk SM posztot erről?": false,
+      "Érdemes ügyfél-webinárt szervezni?": false,
+      "Frissítsük a CRM szolgáltatás oldalát?": false,
+      "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
+      "Milyen új tanácsadási lehetőség adódik?": true
+    },
+    actionNote: "Mielőtt bármit kommunikálnánk belőle, érdemes belsőleg tisztázni, hogyan viszonyul ez az Antavo-adathoz — ellentmondó számokat nem érdemes egyszerre, kontextus nélkül használni."
+  },
+  {
+    id: "visa-chatgpt-agentic-commerce",
+    date: "2026-06-15",
+    publishedAt: "2026.06.15. 09:00",
+    priority: "strat",
+    priorityLabel: "Stratégia",
+    score: "9/15",
+    icon: "crm",
+    status: "active",
+    categories: ["Agentic AI"],
+    sourceCategories: ["AI & Agentic AI", "Retail & E-commerce"],
+    title: "Visa bekötötte a fizetési hálózatát a ChatGPT-be — AI-ügynökök vásárolhatnak és fizethetnek",
+    summary: "A Visa lehetővé tette, hogy AI-ügynökök a felhasználók nevében vásároljanak és fizessenek a ChatGPT-n keresztül — konkrét jele annak, hogy az agentic commerce nem elmélet, hanem élesben induló infrastruktúra.",
+    sourceUrl: "https://thewisemarketer.com/the-loyalty-newswire-june-15-2026/",
+    sourceLabel: "thewisemarketer.com",
+    fields: {
+      "Rövid összefoglaló": "A Visa a fizetési hálózatát a ChatGPT-be kötötte, lehetővé téve, hogy AI-ügynökök a felhasználók nevében autonóm módon vásároljanak és fizessenek — ezzel egy időben a Waymo is önálló, meghívásos tagsági programot (Waymo Premier) indított.",
+      "Mi változott?": "Az \"agentic commerce\" eddig inkább jövőkép volt; most egy globális fizetési hálózat élesben köti be az AI-ügynökök vásárlási képességét.",
+      "Miért fontos?": "Ez azt jelzi, hogy a hűségprogramoknak és CRM-rendszereknek fel kell készülniük arra, hogy a vásárló helyett egyre gyakrabban egy AI-ügynök dönt és fizet.",
+      "Kiket érint?": "Fizetési szolgáltatók, e-commerce és retail márkák, hosszabb távon minden loyalty-programot üzemeltető cég.",
+      "Hatás a Nitro ügyfeleire": "Közvetlen hatás még nincs, de érdemes elkezdeni gondolkodni azon, hogyan azonosítható és jutalmazható egy AI-ügynök által vezérelt vásárlás egy hűségprogramban.",
+      "Üzleti lehetőség": "Korai gondolatvezetői tartalom (\"mi történik a loyalty-programoddal, ha a vásárló helyett egy AI-ügynök vásárol\") megkülönböztető lehet.",
+      "Kockázat": "Ha a piac gyorsabban mozdul, mint a Nitro szolgáltatási portfóliója, lemaradás keletkezhet ezen a területen.",
+      "Kapcsolódó trendek": "Agentic AI klaszter, HubSpot/Salesforce agentic fejlesztések, korábbi loyalty × AI konvergencia-elemzés."
+    },
+    actions: {
+      "Készítsünk SM posztot erről?": true,
+      "Érdemes ügyfél-webinárt szervezni?": false,
+      "Frissítsük a CRM szolgáltatás oldalát?": false,
+      "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
+      "Milyen új tanácsadási lehetőség adódik?": false
+    },
+    actionNote: "Korai jelzés, jó egy gondolatébresztő SM-poszthoz, de még nem érett önálló szolgáltatássá."
+  },
+  {
+    id: "hubspot-warmly-acquisition",
+    date: "2026-06-30",
+    publishedAt: "2026.06.30. 00:00",
+    priority: "strat",
+    priorityLabel: "Stratégia",
+    score: "11/15",
+    icon: "crm",
+    status: "active",
+    categories: ["Agentic AI"],
+    sourceCategories: ["CRM", "AI & Agentic AI"],
+    title: "HubSpot felvásárolja a Warmly-t — az intent-adat és az agentic AI most olvad be a CRM-ekbe",
+    summary: "A HubSpot bejelentette a Warmly (AI-alapú vásárlói szándék-azonosító platform) felvásárlását — ez már a harmadik hasonló lépés fél éven belül a Salesforce-Qualified és Salesforce-Fin/Intercom üzletek után, jelezve, hogy a CRM-óriások magukba olvasztják a köztes GTM-eszközöket.",
+    sourceUrl: "https://www.cmswire.com/digital-experience/hubspot-acquires-warmly-to-boost-ai-sales-agents/",
+    sourceLabel: "cmswire.com",
+    fields: {
+      "Rövid összefoglaló": "2026. június 30-án a HubSpot bejelentette a Warmly (személy-szintű weboldal-látogatói szándékazonosítás és AI-ügynökök) felvásárlását. Ez a harmadik hasonló üzlet fél éven belül: a Salesforce előbb a Qualified-et, majd az Intercom-ot (Fin néven, 3,6 milliárd dollárért) vásárolta fel.",
+      "Mi változott?": "A korábban önálló, CRM és vásárló közé ékelődő \"intent-eszközök\" most sorra beolvadnak a nagy CRM-platformokba.",
+      "Miért fontos?": "Ez nem egyedi tranzakció, hanem strukturális iparági minta: a CRM-óriások szerint az érték a \"rendszer of record\"-ból a \"rendszer of action\"-be tolódik — pontosan az agentic AI-hullám, amit korábban is azonosítottunk.",
+      "Kiket érint?": "Minden HubSpot- vagy Salesforce-alapú CRM-ügyfél, különösen akik B2B értékesítési folyamatot futtatnak.",
+      "Hatás a Nitro ügyfeleire": "A meglévő HubSpot-implementációk mellé érdemes megvizsgálni, hogyan illeszthető be az anonim látogató-azonosítás és az AI-ügynökök használata.",
+      "Üzleti lehetőség": "Ez tovább erősíti a korábban javasolt \"AI-governance & agentic readiness audit\" szolgáltatás létjogosultságát — a piac most gyorsul fel ezen a téren.",
+      "Kockázat": "Ha a Nitro CRM-tanácsadói anyagai nem követik ezt a konszolidációs hullámot, a szolgáltatási kínálat gyorsan elavultnak tűnhet.",
+      "Kapcsolódó trendek": "HubSpot júliusi Breeze AI-frissítés, Salesloft/Clari conversation intelligence, agentic AI klaszter egésze."
+    },
+    actions: {
+      "Készítsünk SM posztot erről?": true,
+      "Érdemes ügyfél-webinárt szervezni?": false,
+      "Frissítsük a CRM szolgáltatás oldalát?": true,
+      "Van olyan ügyfél, akit proaktívan meg kellene keresni?": false,
+      "Milyen új tanácsadási lehetőség adódik?": true
+    },
+    actionNote: "A CRM szolgáltatási oldal frissítése indokolt: érdemes megemlíteni, hogy a Nitro naprakész a CRM-platformok agentic konszolidációs hullámával."
   }
 ];
+
+const LAST_UPDATED = "2026-07-30";
 
 const ICONS = {
   regulation: { bg:"var(--coral-bg)", fg:"var(--coral-dark)", svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>' },
@@ -809,7 +970,7 @@ let currentSourceCat = "all";
 let currentWeek = "all";
 let currentSort = "date";
 let currentPage = 1;
-let showClosed = false;
+let currentAction = "all";
 
 function scoreNum(e){
   return parseInt(e.score, 10) || 0;
@@ -829,23 +990,40 @@ ENTRIES.forEach(e => {
   e._weekLabel = w.week + ". hét (" + w.year + ")";
 });
 
-const weekFiltersEl = document.getElementById("weekFilters");
+const weekSelectEl = document.getElementById("weekSelect");
 const weekKeys = [...new Set(ENTRIES.map(e => e._weekKey))].sort().reverse();
 weekKeys.forEach(key => {
   const sample = ENTRIES.find(e => e._weekKey === key);
-  const btn = document.createElement("button");
-  btn.className = "filter-btn";
-  btn.dataset.week = key;
-  btn.setAttribute("aria-pressed", "false");
-  btn.textContent = sample._weekLabel;
-  weekFiltersEl.appendChild(btn);
+  const opt = document.createElement("option");
+  opt.value = key;
+  opt.textContent = sample._weekLabel;
+  weekSelectEl.appendChild(opt);
 });
 
-const latestDate = ENTRIES.reduce((max, e) => e.date > max ? e.date : max, ENTRIES[0].date);
-document.getElementById("lastUpdated").textContent = "Frissítve: " + latestDate.replaceAll("-", ".") + ".";
+function disableEmptyOptions(selectEl, valueGetter){
+  const used = new Set();
+  ENTRIES.forEach(e => valueGetter(e).forEach(v => used.add(v)));
+  const allOpt = selectEl.querySelector('option[value="all"]');
+  const rest = Array.from(selectEl.options).filter(o => o.value !== "all");
+  rest.forEach(opt => {
+    if (!used.has(opt.value)) {
+      opt.disabled = true;
+      opt.textContent += " — nincs tétel";
+    }
+  });
+  const filled = rest.filter(o => !o.disabled);
+  const empty = rest.filter(o => o.disabled);
+  selectEl.innerHTML = "";
+  selectEl.appendChild(allOpt);
+  filled.forEach(o => selectEl.appendChild(o));
+  empty.forEach(o => selectEl.appendChild(o));
+}
+disableEmptyOptions(document.getElementById("catSelect"), e => e.categories);
+disableEmptyOptions(document.getElementById("srcSelect"), e => e.sourceCategories);
+disableEmptyOptions(document.getElementById("actionSelect"), e => Object.keys(e.actions).filter(k => e.actions[k]));
 
 function badgeClass(p){
-  return {low:"badge-low", med:"badge-med", high:"badge-high", strat:"badge-strat"}[p];
+  return {low:"badge-low", med:"badge-med", strat:"badge-strat"}[p];
 }
 
 function matches(e){
@@ -853,8 +1031,8 @@ function matches(e){
   const cOk = currentCategory === "all" || e.categories.includes(currentCategory);
   const sOk = currentSourceCat === "all" || e.sourceCategories.includes(currentSourceCat);
   const wOk = currentWeek === "all" || e._weekKey === currentWeek;
-  const statusOk = showClosed || e.status !== "closed";
-  return pOk && cOk && sOk && wOk && statusOk;
+  const actionOk = currentAction === "all" || e.actions[currentAction] === true;
+  return pOk && cOk && sOk && wOk && actionOk;
 }
 
 function actionCount(e){
@@ -862,6 +1040,8 @@ function actionCount(e){
 }
 
 function render(){
+  document.getElementById("lastUpdated").textContent = "Frissítve: " + LAST_UPDATED.replaceAll("-", ".") + ".";
+
   const list = ENTRIES.filter(matches);
   if (currentSort === "score") {
     list.sort((a, b) => scoreNum(b) - scoreNum(a));
@@ -869,10 +1049,11 @@ function render(){
     list.sort((a, b) => b.date.localeCompare(a.date));
   }
   const parts = [];
-  if (currentWeek !== "all") parts.push(document.querySelector(`#weekFilters [data-week="${currentWeek}"]`).textContent);
+  if (currentWeek !== "all") parts.push(weekSelectEl.selectedOptions[0].textContent);
   if (currentPriority !== "all") parts.push(document.querySelector(`#filters [data-filter="${currentPriority}"]`).textContent);
   if (currentCategory !== "all") parts.push(currentCategory);
   if (currentSourceCat !== "all") parts.push(currentSourceCat);
+  if (currentAction !== "all") parts.push(ACTION_LABELS[currentAction] || currentAction);
 
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   if (currentPage > totalPages) currentPage = totalPages;
@@ -898,8 +1079,8 @@ function render(){
     summary.innerHTML = `
       <div class="entry-thumb" style="background:${icon.bg}; color:${icon.fg}">${icon.svg}</div>
       <div class="entry-summary-text">
-        <span class="badge ${badgeClass(e.priority)}">${e.priorityLabel} &middot; ${e.score}</span>
-        ${e.status === "closed" ? `<span class="closed-badge">Lezárva</span>` : ""}
+        <span class="badge ${badgeClass(e.priority)}">${e.priorityLabel}</span>
+        ${e.status === "closed" ? `<span class="closed-badge">Inaktív</span>` : ""}
         ${e.resource ? `<span class="resource-badge">Letölthető anyag</span>` : ""}
         ${acts > 0 ? `<span class="action-badge">${acts} akció javasolt</span>` : ""}
         <span class="entry-title">${e.title}</span>
@@ -922,7 +1103,9 @@ function render(){
       </div>
       <div class="tag-row">
         <span class="tag-row-label">Forráskategória</span>
-        <div class="tags-inline">${e.sourceCategories.map(c => `<button class="cat-tag src-tag" data-jump-src="${c}" type="button">${c}</button>`).join("")}</div>
+        <div class="tags-inline">${e.sourceCategories.map(c => `<button class="cat-tag src-tag" data-jump-src="${c}" type="button">${c}</button>`).join("")}
+          <a class="src-methodology-link" href="nitro-forraslista.html#${SRC_TO_ANCHOR[e.sourceCategories[0]] || 'top'}" target="_blank" rel="noopener">Módszertan &amp; teljes forráslista &rarr;</a>
+        </div>
       </div>
     `;
     details.appendChild(tagRows);
@@ -962,13 +1145,19 @@ function render(){
 }
 
 function selectCluster(cat){
-  document.querySelectorAll("#catFilters .filter-btn").forEach(b => {
-    b.setAttribute("aria-pressed", b.dataset.cat === cat ? "true" : "false");
-  });
+  document.getElementById("catSelect").value = cat;
   currentCategory = cat;
   currentPage = 1;
   render();
-  document.getElementById("catFilters").scrollIntoView({behavior:"smooth", block:"center"});
+  document.getElementById("dropdownFilters").scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function selectSourceCat(src){
+  document.getElementById("srcSelect").value = src;
+  currentSourceCat = src;
+  currentPage = 1;
+  render();
+  document.getElementById("dropdownFilters").scrollIntoView({behavior:"smooth", block:"center"});
 }
 
 pagerPrev.addEventListener("click", () => {
@@ -978,11 +1167,34 @@ pagerNext.addEventListener("click", () => {
   currentPage++; render(); window.scrollTo({top:0, behavior:"smooth"});
 });
 
-document.getElementById("showClosed").addEventListener("change", (ev) => {
-  showClosed = ev.target.checked;
-  currentPage = 1;
-  render();
-});
+const SRC_TO_ANCHOR = {
+  "Loyalty & Hűségprogram": "cat-1",
+  "CRM": "cat-2",
+  "Marketing Automatizáció": "cat-3",
+  "Martech": "cat-4",
+  "AI & Agentic AI": "cat-5",
+  "Customer Experience & Churn": "cat-6",
+  "Data & Analytics": "cat-7",
+  "Privacy & Szabályozás": "cat-8",
+  "Consulting & Üzleti stratégia": "cat-9",
+  "Retail & E-commerce": "cat-10",
+  "Digitális transzformáció": "cat-11",
+  "Hazai szaksajtó": "cat-12",
+  "Események & szervezetek": "cat-13",
+  "Versenytárs & partner blogok": "cat-14",
+  "Európai szaksajtó": "cat-15",
+  "Közösségi & trendvadász": "cat-16",
+  "AI-eszköz felfedezés": "cat-17",
+  "PR & social inspiráció": "cat-18"
+};
+
+const ACTION_LABELS = {
+  "Készítsünk SM posztot erről?": "SM poszt",
+  "Érdemes ügyfél-webinárt szervezni?": "Ügyfél-webinár",
+  "Frissítsük a CRM szolgáltatás oldalát?": "CRM oldal frissítés",
+  "Van olyan ügyfél, akit proaktívan meg kellene keresni?": "Proaktív ügyfél-megkeresés",
+  "Milyen új tanácsadási lehetőség adódik?": "Új tanácsadási lehetőség"
+};
 
 document.getElementById("sortRow").addEventListener("click", (ev) => {
   const btn = ev.target.closest(".sort-btn");
@@ -990,16 +1202,6 @@ document.getElementById("sortRow").addEventListener("click", (ev) => {
   document.querySelectorAll("#sortRow .sort-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
   btn.setAttribute("aria-pressed", "true");
   currentSort = btn.dataset.sort;
-  currentPage = 1;
-  render();
-});
-
-document.getElementById("weekFilters").addEventListener("click", (ev) => {
-  const btn = ev.target.closest(".filter-btn");
-  if (!btn) return;
-  document.querySelectorAll("#weekFilters .filter-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
-  btn.setAttribute("aria-pressed", "true");
-  currentWeek = btn.dataset.week;
   currentPage = 1;
   render();
 });
@@ -1014,22 +1216,32 @@ document.getElementById("filters").addEventListener("click", (ev) => {
   render();
 });
 
-document.getElementById("catFilters").addEventListener("click", (ev) => {
-  const btn = ev.target.closest(".filter-btn");
-  if (!btn) return;
-  document.querySelectorAll("#catFilters .filter-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
-  btn.setAttribute("aria-pressed", "true");
-  currentCategory = btn.dataset.cat;
+function markActive(sel){ sel.classList.toggle("dd-active", sel.value !== "all"); }
+
+document.getElementById("weekSelect").addEventListener("change", (ev) => {
+  currentWeek = ev.target.value;
+  markActive(ev.target);
   currentPage = 1;
   render();
 });
 
-document.getElementById("srcFilters").addEventListener("click", (ev) => {
-  const btn = ev.target.closest(".filter-btn");
-  if (!btn) return;
-  document.querySelectorAll("#srcFilters .filter-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
-  btn.setAttribute("aria-pressed", "true");
-  currentSourceCat = btn.dataset.src;
+document.getElementById("catSelect").addEventListener("change", (ev) => {
+  currentCategory = ev.target.value;
+  markActive(ev.target);
+  currentPage = 1;
+  render();
+});
+
+document.getElementById("srcSelect").addEventListener("change", (ev) => {
+  currentSourceCat = ev.target.value;
+  markActive(ev.target);
+  currentPage = 1;
+  render();
+});
+
+document.getElementById("actionSelect").addEventListener("change", (ev) => {
+  currentAction = ev.target.value;
+  markActive(ev.target);
   currentPage = 1;
   render();
 });
@@ -1040,16 +1252,11 @@ container.addEventListener("click", (ev) => {
   if (jumpCat) {
     ev.preventDefault();
     selectCluster(jumpCat.dataset.jumpCat);
+    markActive(document.getElementById("catSelect"));
   } else if (jumpSrc) {
     ev.preventDefault();
-    const src = jumpSrc.dataset.jumpSrc;
-    document.querySelectorAll("#srcFilters .filter-btn").forEach(b => {
-      b.setAttribute("aria-pressed", b.dataset.src === src ? "true" : "false");
-    });
-    currentSourceCat = src;
-    currentPage = 1;
-    render();
-    document.getElementById("srcFilters").scrollIntoView({behavior:"smooth", block:"center"});
+    selectSourceCat(jumpSrc.dataset.jumpSrc);
+    markActive(document.getElementById("srcSelect"));
   }
 });
 
